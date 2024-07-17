@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from aiokafka import AIOKafkaProducer
+from aiokafka import AIOKafkaConsumer
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 import json
 import asyncio
@@ -30,3 +31,21 @@ async def create_order(order:order):
         # Wait for all pending messages to be delivered or expire.
         await producer.stop()
     return order_json
+
+@app.get("/consumer")
+async def consume():
+    consumer = AIOKafkaConsumer(
+        'order',
+        bootstrap_servers='broker:19092',
+        group_id="my-group")
+    # Get cluster layout and join group `my-group`
+    await consumer.start()
+    try:
+        # Consume messages
+        async for msg in consumer:
+            print("consumed: ", msg.topic, msg.partition, msg.offset,
+                  msg.key, msg.value, msg.timestamp)
+    finally:
+        # Will leave consumer group; perform autocommit if enabled.
+        await consumer.stop()
+    return {"data":consumer}

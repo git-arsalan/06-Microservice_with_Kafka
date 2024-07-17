@@ -46,6 +46,8 @@ services:
     container_name: order-service
     ports:
       - "8000:8000"
+    volumes:
+      - "./order-service:/code/"  
     depends_on:
       - postgres_db
 volumes:
