@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "order-service"
+version = "0.1.0"
+description = ""
+authors = ["Arsalan <arsalan.akkhter@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+uvicorn = "^0.30.1"
+fastapi = "^0.111.1"
+sqlmodel = "^0.0.20"
+aiokafka = "^0.11.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
